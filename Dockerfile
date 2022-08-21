@@ -1,24 +1,18 @@
-FROM gcc:latest
+FROM fuzzers/afl:2.52
 
-RUN apt-get update && apt-get install -y build-essential
-RUN apt-get install -y libfftw3-dev
-RUN apt-get install -y libsndfile1-dev
-RUN apt-get install -y automake
-RUN apt-get install -y autoconf
-RUN apt-get install -y libtool
-RUN apt-get install -y autoconf-archive
-RUN apt-get install -y libgcrypt20-dev
-RUN apt-get install -y libzita-resampler-dev
-RUN apt-get install -y libmpg123-dev
-
-ADD . /audiowmark
+RUN apt-get update
+RUN apt install -y build-essential wget git clang cmake  automake autotools-dev  libtool zlib1g zlib1g-dev libexif-dev libjpeg-dev gettext
+RUN  git clone  https://github.com/swesterfeld/audiowmark.git
 WORKDIR /audiowmark
-
 RUN ./autogen.sh
+RUN ./configure CC=afl-clang CXX=afl-clang++
 RUN make
 RUN make install
+RUN mkdir /audiowmarkCorpus
+RUN wget https://www2.cs.uic.edu/~i101/SoundFiles/StarWars3.wav
+RUN wget https://www2.cs.uic.edu/~i101/SoundFiles/preamble10.wav
+RUN mv *.wav /audiowmarkCorpus
 
-VOLUME ["/data"]
-WORKDIR /data
 
-ENTRYPOINT ["/usr/local/bin/audiowmark"]
+ENTRYPOINT  ["afl-fuzz", "-m", "2048", "-t", "3000+", "-i", "/audiowmarkCorpus", "-o" "/audiowmarkOut"]
+CMD ["/audiowmark/src/audiowmark", "get", "@@"]
