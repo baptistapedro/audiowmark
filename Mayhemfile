@@ -1,0 +1,46 @@
+# Mayhem by https://forallsecure.com
+# Mayhemfile: configuration file for testing your target with Mayhem
+# Format: YAML 1.1
+
+# Project name that the target belongs to
+project: baptistapedro/audiowmark-fuzz
+
+# Target name (should be unique within the project)
+target: audiowmark-fuzz-latest
+
+# Base image to run the binary in.
+image: index.docker.io/pedbap/audiowmark-fuzz@sha256:25dc994fbf0de24b0056c37766f098458b841f4974d2d8b059c91c0b89d50c7e
+
+# Turns on extra test case processing (completing a run will take longer)
+advanced_triage: false
+
+# List of commands used to test the target
+cmds:
+
+  # Command used to start the target, "@@" is the input file
+  # (when "@@" is omitted Mayhem defaults to stdin inputs)
+  - cmd: /audiowmark/src/audiowmark get @@
+    timeout: 3
+    env: {}
+
+    ## Uncomment to change default dir (/) from which the target is invoked
+    #cwd: /
+
+    ## If this is a network target, uncomment the block below and remove
+    ## the @@ input file reference in the cmd (you can either test network or
+    ## file inputs, not both).
+    #network:
+    ## Use "127.0.0.1" instead of "localhost" below if you want to test only
+    ## for IPv4. For IPv6, use "[::1]". By leaving as "localhost", Mayhem will
+    ## attempt to autodetect the one used by the target.
+    #  url: tcp://localhost:8080  # protocol, host and port to analyze
+    #  client: False           # target is a client-side program
+    #  timeout: 2.0               # max seconds for sending data
+
+    ## Max test case length (in bytes) to be taken into account. Test cases over
+    ## that length will be truncated. Be very careful about increasing this
+    ## limit as it can severely affect your fuzzer performance.
+    # max_length: 8192
+
+testsuite:
+  - https://mayhem.forallsecure.com/baptistapedro/audiowmark-fuzz/audiowmark-fuzz-latest/testsuite.tar
