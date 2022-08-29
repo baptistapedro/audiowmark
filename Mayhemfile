@@ -9,7 +9,7 @@ project: baptistapedro/audiowmark-fuzz
 target: audiowmark-fuzz-latest
 
 # Base image to run the binary in.
-image: index.docker.io/pedbap/audiowmark-fuzz@sha256:25dc994fbf0de24b0056c37766f098458b841f4974d2d8b059c91c0b89d50c7e
+image: pedbap/audiowmark-fuzz
 
 # Turns on extra test case processing (completing a run will take longer)
 advanced_triage: false
@@ -41,6 +41,3 @@ cmds:
     ## that length will be truncated. Be very careful about increasing this
     ## limit as it can severely affect your fuzzer performance.
     # max_length: 8192
-
-testsuite:
-  - https://mayhem.forallsecure.com/baptistapedro/audiowmark-fuzz/audiowmark-fuzz-latest/testsuite.tar
