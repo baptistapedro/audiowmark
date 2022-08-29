@@ -1,7 +1,7 @@
 FROM fuzzers/afl:2.52
 
 RUN apt-get update
-RUN apt install -y build-essential wget git clang cmake  automake autotools-dev  libtool zlib1g zlib1g-dev libexif-dev libjpeg-dev gettext
+RUN apt install -y build-essential wget git clang cmake  automake autotools-dev pkg-config  libtool zlib1g zlib1g-dev libexif-dev libjpeg-dev gettext
 RUN  git clone  https://github.com/swesterfeld/audiowmark.git
 WORKDIR /audiowmark
 RUN ./autogen.sh
