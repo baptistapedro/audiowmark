@@ -15,5 +15,5 @@ RUN wget https://www2.cs.uic.edu/~i101/SoundFiles/preamble10.wav
 RUN mv *.wav /audiowmarkCorpus
 
 
-ENTRYPOINT  ["afl-fuzz", "-m", "2048", "-t", "3000+", "-i", "/audiowmarkCorpus", "-o" "/audiowmarkOut"]
+ENTRYPOINT ["afl-fuzz", "-m", "2048", "-t", "3000+", "-i", "/audiowmarkCorpus", "-o", "/audiowmarkOut"]
 CMD ["/audiowmark/src/audiowmark", "get", "@@"]
